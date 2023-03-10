@@ -24,19 +24,29 @@ function setup() {
 
     let clearButton = createButton("Clear grid");
     clearButton.mousePressed(() => {
-        cells.forEach(column => column.forEach(cell => cell.alive = false));
+        cells.forEach(column => column.forEach(cell => {
+            cell.alive = false;
+            cell.draw();
+        }));
     });
+
+    // draw once!
+    cells.forEach(column => column.forEach(cell => cell.draw()));
 }
 
 function draw() {
-    background(220);
     if (simulating) {
         frameRate(5);
+
+        // save their last states
+        cells.forEach(column => column.forEach(cell => cell.cache()));
+        
+        // update the new states!
         cells.forEach(column => column.forEach(cell => {
             cell.draw()
             cell.update();
         }));
-    } else cells.forEach(column => column.forEach(cell => cell.draw()));
+    }
 
 }
 
@@ -52,5 +62,6 @@ const mouse = () => {
     let clicked = Cell.getCell(gridX, gridY);
     if (!clicked) return;
 
-    clicked.alive = !clicked.alive; 
+    clicked.alive = !clicked.alive;
+    clicked.draw();
 }

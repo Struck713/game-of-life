@@ -7,7 +7,7 @@ class Cell {
 
     static isAlive(x, y) {
         let cell = Cell.getCell(x, y);
-        if (cell) return cell.alive;
+        if (cell) return cell.lastState;
         return false;
     }
 
@@ -15,6 +15,7 @@ class Cell {
         this.x = x;
         this.y = y;
         this.alive = false;
+        this.lastState = false;
     }
 
     draw() {
@@ -39,6 +40,10 @@ class Cell {
 
         if (this.alive) this.alive = (neighbors == 2 || neighbors == 3);
         else this.alive = (neighbors == 3);
+    }
+
+    cache() {
+        this.lastState = this.alive;
     }
 
 }
